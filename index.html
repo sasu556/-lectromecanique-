@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electromécanique L2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0f172a; --accent: #f59e0b; --bg: #f8fafc; --white: #ffffff;
+        }
+        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--bg); color: var(--primary); }
+        
+        header {
+            background: var(--primary); color: var(--white); padding: 1.2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .menu-btn { font-size: 1.5rem; color: var(--accent); cursor: pointer; }
+
+        .sidebar {
+            height: 100%; width: 0; position: fixed; top: 0; left: 0;
+            background: #1e293b; overflow-x: hidden; transition: 0.3s;
+            padding-top: 60px; z-index: 2000;
+        }
+        .sidebar a {
+            padding: 15px 25px; text-decoration: none; color: #cbd5e1;
+            display: block; border-bottom: 1px solid #334155;
+        }
+        .sidebar a:hover { background: var(--accent); color: var(--primary); }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: white; cursor: pointer; }
+
+        .container { padding: 20px; max-width: 1000px; margin: auto; }
+        .welcome-text { text-align: center; margin-bottom: 30px; }
+
+        .subjects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px;
+        }
+        .subject-card {
+            background: var(--white); border-radius: 15px; padding: 20px; text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); cursor: pointer; transition: 0.2s;
+        }
+        .subject-card:hover { transform: translateY(-5px); box-shadow: 0 15px 20px -3px rgba(0, 0, 0, 0.15); }
+        .subject-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; }
+        .subject-card h3 { font-size: 0.85rem; margin: 0; color: var(--primary); line-height: 1.4; }
+
+        .page { display: none; }
+        .active-page { display: block; animation: fadeIn 0.4s; }
+
+        .back-btn {
+            background: #e2e8f0; border: none; padding: 10px 15px;
+            border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-weight: bold;
+        }
+
+        .tabs { display: flex; background: #e2e8f0; border-radius: 10px; padding: 5px; margin-bottom: 20px; }
+        .tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; border-radius: 8px; font-weight: bold; }
+        .tab.active { background: var(--accent); color: var(--primary); }
+
+        .file-list { list-style: none; padding: 0; }
+        .file-item {
+            background: white; margin-bottom: 10px; padding: 15px;
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: space-between; text-decoration: none; color: inherit;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid var(--accent);
+        }
+        .file-info i { margin-right: 10px; color: #ef4444; font-size: 1.2rem; }
+        
+        .urgent-note {
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 0.8rem;
+            display: block;
+            margin-top: 5px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <i class="fas fa-bars menu-btn" onclick="openNav()"></i>
+        <span>Electromécanique L2</span>
+        <i class="fas fa-user-graduate"></i>
+    </header>
+
+    <div id="mySidebar" class="sidebar">
+        <span class="close-btn" onclick="closeNav()">&times;</span>
+        <a href="#" onclick="showPage('home')">Accueil</a>
+        <a href="#" onclick="showPage('videos')">Vidéos YouTube</a>
+    </div>
+
+    <div class="container">
+        <div id="home" class="page active-page">
+            <div class="welcome-text">
+                <h1>Tableau de Bord</h1>
+                <p>Sélectionnez un module pour accéder aux fichiers</p>
+            </div>
+            <div class="subjects-grid" id="subjectsContainer"></div>
+        </div>
+
+        <div id="subject-detail" class="page">
+            <button class="back-btn" onclick="showPage('home')">← Retour</button>
+            <h2 id="title-subject" style="color: var(--primary);">Module</h2>
+            <div class="tabs">
+                <div id="tab-cours" class="tab active" onclick="switchTab('cours')">Cours</div>
+                <div id="tab-td" class="tab" onclick="switchTab('td')">TD</div>
+                <div id="tab-tp" class="tab" onclick="switchTab('tp')">TP</div>
+            </div>
+            <div id="files-container" class="file-list"></div>
+        </div>
+
+        <div id="videos" class="page">
+            <button class="back-btn" onclick="showPage('home')">← Retour</button>
+            <h2>Vidéos YouTube</h2>
+            <div id="videos-container" class="file-list"></div>
+        </div>
+    </div>
+
+<script>
+    // ==========================================
+    // ⚙️ البيانات: تم إضافة SLC و Méthodes Numériques
+    // ==========================================
+    const SUBJECTS_DATA = {
+        'RDM': {
+            name: 'Résistance des Matériaux',
+            icon: 'fas fa-ruler-combined',
+            cours: [], td: [], tp: []
+        },
+        'Hydraulique': {
+            name: 'Hydraulique et Pneumatique',
+            icon: 'fas fa-compress-arrows-alt',
+            cours: [
+                { name: 'Chapitre 01: Propriétés des Fluides', id: '1xDYWncylZ7OByEpZWhnvQUVJ6flI2WP3' }
+            ],
+            td: [
+                { name: 'TD 01: Propriétés des fluides <span class="urgent-note">⚠️ À IMPRIMER</span>', id: '1dinv54t1dxIy7QnZ3__HhGq2g5oJNF_O' }
+            ],
+            tp: []
+        },
+        'Méthodes Numériques': {
+            name: 'Méthodes Numériques',
+            icon: 'fas fa-calculator',
+            cours: [],
+            td: [
+                // تم إضافة ملف TD هنا
+                { name: 'TD 01: Méthodes Numériques', id: '1kPpvlX7m2I21QSVYF5DCnv4CF28dutEi' }
+            ],
+            tp: []
+        },
+        'Mesures': {
+            name: 'Mesures Électriques et Électroniques',
+            icon: 'fas fa-bolt',
+            cours: [], td: [], tp: []
+        },
+        'Logique': {
+            name: 'Logique Combinatoire (SLC)',
+            icon: 'fas fa-microchip',
+            cours: [],
+            td: [
+                // تم إضافة ملف TD هنا
+                { name: 'TD 01: SLC (Logique Combinatoire)', id: '1YnnT4-WuYjziUGjorKyM1LYNeLDpe_UA' }
+            ],
+            tp: []
+        },
+        'Conversion': {
+            name: 'Conversion de l\'Énergie',
+            icon: 'fas fa-charging-station',
+            cours: [], td: [], tp: []
+        },
+        'TEC': {
+            name: 'Technique d\'Expression',
+            icon: 'fas fa-comments',
+            cours: [], td: [], tp: []
+        }
+    };
+
+    const VIDEOS_DATA = [];
+
+    let currentSubject = '';
+    let currentTab = 'cours';
+
+    function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
+    function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
+
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        document.getElementById(pageId).classList.add('active-page');
+        closeNav();
+        if(pageId === 'videos') displayVideos();
+    }
+
+    function initGrid() {
+        const container = document.getElementById('subjectsContainer');
+        container.innerHTML = Object.keys(SUBJECTS_DATA).map(key => `
+            <div class="subject-card" onclick="openSubject('${key}')">
+                <i class="${SUBJECTS_DATA[key].icon}"></i>
+                <h3>${SUBJECTS_DATA[key].name}</h3>
+            </div>
+        `).join('');
+    }
+
+    function openSubject(key) {
+        currentSubject = key;
+        document.getElementById('title-subject').innerText = SUBJECTS_DATA[key].name;
+        showPage('subject-detail');
+        switchTab('cours');
+    }
+
+    function switchTab(type) {
+        currentTab = type;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + type).classList.add('active');
+        displayFiles();
+    }
+
+    function displayFiles() {
+        const container = document.getElementById('files-container');
+        const files = SUBJECTS_DATA[currentSubject][currentTab].filter(f => f.id || f.link);
+
+        if (files.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding:20px; color:gray;">Aucun fichier disponible pour le moment.</p>';
+            return;
+        }
+
+        container.innerHTML = files.map(file => `
+            <a href="https://drive.google.com/uc?export=download&id=${file.id}" class="file-item" target="_blank">
+                <div class="file-info">
+                    <i class="fas fa-file-pdf"></i>
+                    <strong>${file.name}</strong>
+                </div>
+                <i class="fas fa-download" style="color: #10b981;"></i>
+            </a>
+        `).join('');
+    }
+
+    function displayVideos() {
+        const container = document.getElementById('videos-container');
+        container.innerHTML = '<p style="text-align:center; color:gray; padding:20px;">Section bientôt disponible.</p>';
+    }
+
+    document.addEventListener('DOMContentLoaded', initGrid);
+</script>
+</body>
+</html>

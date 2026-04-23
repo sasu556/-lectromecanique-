@@ -227,7 +227,25 @@
 <script>
     const SUBJECTS_DATA = {
         'RDM': { name: 'Résistance des Matériaux', icon: 'fas fa-ruler-combined', cours: [{ name: 'Chapitre 01: Traction', id: '1jAYywxjn1HVuTzQEd5JZXjPnHu3LPn0t' }], td: [{ name: 'Fiche TD RDM', id: '1Y8BSTUZ7QMcgt0O-alxva66Hfr_BYNO4' }], tp: [{ name: 'TP 01: Traction', id: '1iy2ZWw5UHQiT2c4JNNCYEn6XCG8jLJGB' }] },
-        'Hydraulique': { name: 'Hydraulique et Pneumatique', icon: 'fas fa-water', cours: [{ name: 'Chapitre 01: Propriétés des Fluides', id: '1xDYWncylZ7OByEpZWhnvQUVJ6flI2WP3' }, { name: 'Chapitre 02: Statique des Fluides', id: '1qrfupd3BSxDa5FTzngkOGdGCkPNdF1sq' }, { name: 'Chapitre 03: Dynamique des Fluides Parfaits', id: '15MDuR46qCK9fbMssbDiKWiagl24QdONk' }], td: [{ name: 'TD 01: Propriétés des fluides <span class="urgent-note">⚠️ À IMPRIMER</span>', id: '1dinv54t1dxIy7QnZ3__HhGq2g5oJNF_O' }, { name: 'TD 02: Statique des Fluides <span class="urgent-note">⚠️ À IMPRIMER</span>', id: '16NGJ8hJF_747B1FA7o65ke9qAC7pqOxO' }, { name: 'TD 03: Dynamique des fluides <span class="urgent-note">⚠️ À IMPRIMER</span>', id: '1y8svXHr1knUoF8DD59TbN-nDnA2ndnAl' }, { name: 'TD 04: Dynamique des fluides-1 <span class="urgent-note">⚠️ À IMPRIMER</span>', id: '1AEsUEEP1AYrlsXjZRgiiC-ohKIkH19Wa' }, { name: 'TD 05: Hydraulique', id: '1TV3bYNQXEoSlkY1oNst7I-ng8xOl1jZa' }], tp: [] },
+        'Hydraulique': { 
+            name: 'Hydraulique et Pneumatique', 
+            icon: 'fas fa-water', 
+            cours: [
+                { name: 'Cours Hydraulique (Complet)', id: '1l80nTltLn8ZPrA1Ahd2sH4WCb5_FPwJp' },
+                { name: 'Chapitre 01: Propriétés des Fluides', id: '1xDYWncylZ7OByEpZWhnvQUVJ6flI2WP3' }, 
+                { name: 'Chapitre 02: Statique des Fluides', id: '1qrfupd3BSxDa5FTzngkOGdGCkPNdF1sq' }, 
+                { name: 'Chapitre 03: Dynamique des Fluides Parfaits', id: '15MDuR46qCK9fbMssbDiKWiagl24QdONk' }
+            ], 
+            td: [
+                { name: 'TD Hydraulique (Complet)', id: '1Y6jlgwGG0tuWR8QaILbgmCRkVfcjTn8e' },
+                { name: 'TD 01: Propriétés des fluides <span class="urgent-note">⚠️ À IMPRIMER</span>', id: '1dinv54t1dxIy7QnZ3__HhGq2g5oJNF_O' }, 
+                { name: 'TD 02: Statique des Fluides <span class="urgent-note">⚠️ À IMPRIMER</span>', id: '16NGJ8hJF_747B1FA7o65ke9qAC7pqOxO' }, 
+                { name: 'TD 03: Dynamique des fluides <span class="urgent-note">⚠️ À IMPRIMER</span>', id: '1y8svXHr1knUoF8DD59TbN-nDnA2ndnAl' }, 
+                { name: 'TD 04: Dynamique des fluides-1 <span class="urgent-note">⚠️ À IMPRIMER</span>', id: '1AEsUEEP1AYrlsXjZRgiiC-ohKIkH19Wa' }, 
+                { name: 'TD 05: Hydraulique', id: '1TV3bYNQXEoSlkY1oNst7I-ng8xOl1jZa' }
+            ], 
+            tp: [] 
+        },
         'Méthodes Numériques': { name: 'Méthodes Numériques', icon: 'fas fa-calculator', cours: [{ name: 'Cours MN', id: '1icgBXrATE_d1Cj6HM9z1PKDHoGnV3R_u' }], td: [{ name: 'TD 01: Méthodes Numériques', id: '1jOM4AO8nUM_DwWxXouHYV2iFIZhJsl8V' }, { name: 'TD 02: Méthodes Numériques', id: '1ePC7DEwsUZQR8qtXrA3pNm0RQfrYXEc2' }, { name: 'TD 03: MN', id: '1meKzyfMHXzPa5vWr-yoDfrF0CIE7iz35' }], tp: [{ name: 'TP N°1: Méthode de Dichotomie', id: '1bZDp5yU--E4neiwU6AiYcXQa7G4BAhaD' }] },
         'Mesures': { name: 'Mesures Électriques', icon: 'fas fa-bolt', cours: [{ name: 'Fiche cours MEE', id: '1oGKDsx6mbyVqfaVtIQn_DCgwsDVmNSMN' }], td: [], tp: [{ name: 'TP 00 MEE', id: '1fIrZoQQmEpZHKNjuRAsL5nCPmzlPy44W' }] },
         'Logique': { name: 'Logique Combinatoire et Séquentielle', icon: 'fas fa-microchip', cours: [], td: [{ name: 'TD 01: SLC (Logique Combinatoire)', id: '1FQ4M21fprogOzw5M82WV-mz4A0121wAO' }, { name: 'TD 02: SLC', id: '1Mp6rZLxEYeWMkn6eS3LVVqIKInc_q6YE' }, { name: 'TD 03: SLC', id: '1PPyS2k66YIWzOYeLUFdIDkyP0J1jFGRk' }, { name: 'TD 04: LCS', id: '1WUUmPAtEzzYqOoDL75QBjKXF2NrVYlZR' }], tp: [{ name: 'TP1: Opérateurs Logiques & Simplification', id: '1zBVrLoUqQ-NK1mU_Kze28GsnZ_ovaXNU' }, { name: 'TP2,3: Codeur, Décodeur, MUX, DEMUX', id: '1K-Me0Oh2vmlCYrd0ZC2OHUulk90f_wPw' }] },
@@ -321,5 +339,4 @@
     });
 </script>
 </body>
-          </html>
-          
+</html>
